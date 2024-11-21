@@ -1,8 +1,8 @@
-# Your Name Here
+# Calvin Rasmussen
 # UWYO COSC 1010
-# Submission Date
-# Lab XX
-# Lab Section: 
+# 11/24/2024
+# Lab 10
+# Lab Section: 12
 # Sources, people worked with, help given to: 
 # your
 # comments
@@ -43,3 +43,40 @@ def get_hash(to_hash):
 # Hash each individual password and compare it against the stored hash.
 # - When you find the match, print the plaintext version of the password.
 # - End your loop.
+
+def crack_password():
+    # Try to open the `hash` file and read the stored hash
+    try:
+        with open('hash', 'r') as hash_file:
+            stored_hash = hash_file.read().strip()
+    except FileNotFoundError:
+        print("Error: The file `hash` was not found.")
+        return
+    except Exception as e:
+        print(f"An error occurred while reading the `hash` file: {e}")
+        return
+
+    # Try to open `rockyou.txt` and read the passwords
+    try:
+        with open('rockyou.txt', 'r', encoding='utf-8', errors='ignore') as passwords_file:
+            passwords = passwords_file.readlines()
+    except FileNotFoundError:
+        print("Error: The file `rockyou.txt` was not found.")
+        return
+    except Exception as e:
+        print(f"An error occurred while reading the `rockyou.txt` file: {e}")
+        return
+    else:
+        # Loop through each password and hash it
+        for password in passwords:
+            password = password.strip()  # Remove any trailing newline or whitespace
+            hashed_password = get_hash(password)
+            if hashed_password == stored_hash:
+                print(f"Password found: {password}")
+                break
+        else:
+            print("Password not found in the provided list.")
+
+# Run the password cracking function
+if __name__ == "__main__":
+    crack_password()
